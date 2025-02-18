@@ -29,7 +29,7 @@ class Admin extends Usuario {
     autenticar(senha) {  
         return senha === this._senha && this.nivelAcesso === 'alto';  
     }  
-}  
+}  f
 
 const usuario1 = new Usuario("Luiz", "luiz@gmail.com", "1234");  
 const usuario2 = new Admin("Neymar", "sonegador@gmail.com", "2011", "alto");  
