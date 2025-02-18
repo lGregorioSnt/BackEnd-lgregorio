@@ -9,7 +9,7 @@ app.use(express.json()); //habilitar json no express
 app.post("/user", (req,res) => {
     const {nome, email} = req.body;     
     if(!nome || !email){
-        return res.status(400).jsoncd
+        return res.status(400).json
         ({error: "Nome e email são obrigatorios"})}
         
         const user = userService.addUser(nome,email);
