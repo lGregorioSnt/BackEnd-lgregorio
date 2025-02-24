@@ -1,19 +1,20 @@
-const user = require("./user.js")
+const User = require("./user.js"); // Import User class  
 
-class userService{
-    constructor(user, nextid){
-        this.users = []; //array p armazena uzuario
-        this.nextid = 1; // contador p gerar id
-        
-    }
-    addUser(nome,email){
-        const user = new user(this.nextid++, nome, email)
-        this.users.push(user)
-        return user
-    }
-    getUsers(){
-        return this.users
-    }
-}
+class UserService {  
+    constructor() {  
+        this.users = []; // Array to store users  
+        this.nextId = 1; // Counter to generate IDs  
+    }  
 
-module.exports = new userService;
+    addUser(nome, email) {  
+        const user = new User(this.nextId++, nome, email);  
+        this.users.push(user);  
+        return user;  
+    }  
+
+    getUsers() {  
+        return this.users;  
+    }  
+}  
+
+module.exports = new UserService(); // Export a new instance of UserService

@@ -1,28 +1,27 @@
-const express = require("express")
-const userService = require("./userService")
+const express = require("express");  
+const userService = require("./userService");  
 
-const app = express(); // nome qualquer p express
-app.use(express.json()); //habilitar json no express
+const app = express();  
+app.use(express.json()); // Enable JSON parsing for incoming requests  
 
-// rota p criar user
+// Route to create a user  
+app.post("/user", (req, res) => {  
+    const { nome, email } = req.body;  
+    if (!nome || !email) {  
+        return res.status(400).json({ error: "Nome e email são obrigatórios" });  
+    }  
 
-app.post("/user", (req,res) => {
-    const {nome, email} = req.body;     
-    if(!nome || !email){
-        return res.status(400).json
-        ({error: "Nome e email são obrigatorios"})}
-        
-        const user = userService.addUser(nome,email);
-        res.status(200). json({user});
-})
+    const user = userService.addUser(nome, email);  
+    return res.status(201).json({ user }); // Change status to 201 for created resource  
+});  
 
-// rota p mostra users
+// Route to show users  
+app.get("/user", (req, res) => {  
+    const users = userService.getUsers(); // Call the function to retrieve the users  
+    return res.json(users); // Return the list of users  
+});  
 
-app.get ("/user", (req, res) =>{
-    res.json (userService.getUsers)
-})
-
-const port = 3000;
-app.listen(port, () =>{
-    console.log("Server rodando na porta", port)
-})
+const port = 3000;  
+app.listen(port, () => {  
+    console.log("Server rodando na porta", port);  
+});
