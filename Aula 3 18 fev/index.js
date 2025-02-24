@@ -5,8 +5,8 @@ const app = express();
 app.use(express.json()); // Enable JSON parsing for incoming requests  
 
 // Route to create a user  
-app.post("/user", (req, res) => {  
-    const { nome, email } = req.body;  
+app.post("/userx", (req, res) => {  
+    const { nome, email } = req.body  
     if (!nome || !email) {  
         return res.status(400).json({ error: "Nome e email são obrigatórios" });  
     }  
@@ -16,7 +16,7 @@ app.post("/user", (req, res) => {
 });  
 
 // Route to show users  
-app.get("/user", (req, res) => {  
+app.get("/users", (req, res) => {  
     const users = userService.getUsers(); // Call the function to retrieve the users  
     return res.json(users); // Return the list of users  
 });  

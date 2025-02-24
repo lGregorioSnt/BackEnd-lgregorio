@@ -1,4 +1,4 @@
-const User = require("./user.js"); // Import User class  
+const User = require("./user"); // Import User class  
 
 class UserService {  
     constructor() {  
