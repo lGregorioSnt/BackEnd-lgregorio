@@ -5,4 +5,4 @@ class User {
         this.email = email
     }
 }
-module.exports = User //vai exportar o user 
+module.exports = User
