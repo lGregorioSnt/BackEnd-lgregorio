@@ -1,4 +1,6 @@
 const User = require("./user")
+const path = require("path") //modulo p manipular caminhos
+const fs = require("fs")//modulo p manipular arquivos
 
 class userService{
     constructor(){ //quando não passa parâmetro traz um valor fixo, que não muda
