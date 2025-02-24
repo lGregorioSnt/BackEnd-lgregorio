@@ -1,9 +1,8 @@
-class User {  
-    constructor(id, nome, email) {  
-        this.id = id; // ID of the user  
-        this.nome = nome; // User's name  
-        this.email = email; // User's email  
-    }  
-}  
-
-module.exports = User; // Export the module
+class User {
+    constructor(id, nome, email){
+        this.id = id
+        this.nome = nome
+        this.email = email
+    }
+}
+module.exports = User //vai exportar o user 
