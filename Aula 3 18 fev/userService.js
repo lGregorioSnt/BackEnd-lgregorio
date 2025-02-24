@@ -23,9 +23,14 @@ class userService{
     }
 
     getNextId(){
+        try{
         if(this.users.length===-0) return 1; 
-        return Math.max(...this.users.map(user => user.id))+1;
+        return Math.max(...this.users.map(user => user.id))+1,
+        }catch (erro) {
+            console.log("erro ao buscar o id")
+        }
     }
+
 
 
     
