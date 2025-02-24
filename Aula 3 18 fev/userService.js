@@ -19,7 +19,12 @@ class userService{
     }catch(erro){ //caso ocorra um erro
         console.log("erro ao carregar arquivo", erro)
     }
-        
+        return[]; //quebra de codigos
+    }
+
+    getNextId(){
+        if(this.users.length===-0) return 1; 
+        return Math.max(...this.users.map(user => user.id))+1;
     }
 
 
