@@ -28,10 +28,17 @@ class userService{
         return Math.max(...this.users.map(user => user.id))+1;
         }
         catch (erro) {
-          console.log("erro ao buscar o id")
+          console.log("erro ao buscar o id", erro)
         }
     }
-
+saveUsers (){
+    try{
+    fs.writeFileSync(this.filePath, json.stringify(this.users))// serve p salvar os arquivos
+    }
+    catch (erro){
+        console.log ("Não foi possivel salvar o usuario", erro)
+    }
+}
 
 
     
@@ -41,14 +48,14 @@ class userService{
         this.users.push(user) 
         return user}
         catch (erro){
-            console.log("erro ao adicionar usuario")
+            console.log("erro ao adicionar usuario", erro)
         }
     }
     getUsers(){
         try{
         return this.users}
-        catch (erro){ 
-            console.log("erro ao puxar os usuarios")
+        catch (erro){
+            console.log("erro ao puxar os usuarios", erro)
     }
 }
 
