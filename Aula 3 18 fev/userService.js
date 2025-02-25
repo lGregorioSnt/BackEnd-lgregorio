@@ -1,64 +1,63 @@
-const User = require("./user")
-const path = require("path") //modulo p manipular caminhos
-const fs = require("fs");//modulo p manipular arquivos
-const { json } = require("express");
+const User = require("./user");
+const path = require("path"); // módulo para manipular caminhos
+const fs = require("fs"); // módulo para manipular arquivos
 
-class userService{
-    constructor(){ //quando não passa parâmetro traz um valor fixo, que não muda
-        this.filePath = path.join(__dirname, 'user.json');    
-        this.users = [] // esse array é pra armazenar o user
-        this.nextID = 1 //contador para gerar id
-    }
-
-    loadUsers(){
-        try{ // tenta executar o codigo
-        if (fs.existsSync(this.filePath)){ //verfica se o arquivo existe
-            const data = fs.readFileSync(this.filePath); //le o arqv
-            return JSON.parse(data); // transforma o json em objeto
-        }
-    }catch(erro){ //caso ocorra um erro
-        console.log("erro ao carregar arquivo", erro)
-    }
-        return[]; //quebra de codigos
+class userService {
+    constructor() {
+        // quando não passa parâmetro, traz um valor fixo, que não muda
+        this.filePath = path.join(__dirname, 'user.json');
+        this.users = this.loadUsers(); // invoca o método para carregar os usuários
+        this.nextID = this.getNextId(); // invoca o método para pegar o próximo ID
     }
 
-    getNextId(){
-        try{
-        if(this.users.length===-0) return 1; 
-        return Math.max(...this.users.map(user => user.id))+1;
+    loadUsers() {
+        try {
+            // tenta executar o código
+            if (fs.existsSync(this.filePath)) { // verifica se o arquivo existe
+                const data = fs.readFileSync(this.filePath); // lê o arquivo
+                return JSON.parse(data); // transforma o JSON em objeto
+            }
+        } catch (erro) { // caso ocorra um erro
+            console.log("Erro ao carregar arquivo", erro);
         }
-        catch (erro) {
-          console.log("erro ao buscar o id", erro)
+        return []; // retorna array vazio em caso de erro ou arquivo não encontrado
+    }
+
+    getNextId() {
+        try {
+            if (this.users.length === 0) return 1; // caso não haja nenhum usuário
+            return Math.max(...this.users.map(user => user.id)) + 1; // retorna o maior id + 1
+        } catch (erro) {
+            console.log("Erro ao buscar o id", erro);
         }
     }
-saveUsers (){
-    try{
-    fs.writeFileSync(this.filePath, json.stringify(this.users))// serve p salvar os arquivos
+
+    saveUsers() {
+        try {
+            fs.writeFileSync(this.filePath, JSON.stringify(this.users)); // salva os usuários no arquivo
+        } catch (erro) {
+            console.log("Não foi possível salvar o usuário", erro);
+        }
     }
-    catch (erro){
-        console.log ("Não foi possivel salvar o usuario", erro)
+
+    addUser(nome, email, senha, cpf, endereço, telefone) {
+        try {
+            const user = new User(this.nextID++, nome, email, senha, cpf, endereço, telefone); // cria novo usuário
+            this.users.push(user); // adiciona o novo usuário
+            this.saveUsers(); // salva os usuários no arquivo
+            return user;
+        } catch (erro) {
+            console.log("Erro ao adicionar usuário", erro);
+        }
+    }
+
+    getUsers() {
+        try {
+            return this.users; // retorna os usuários
+        } catch (erro) {
+            console.log("Erro ao puxar os usuários", erro);
+        }
     }
 }
 
-
-    
-    addUser(nome,email){
-        try{
-        const user = new User(this.nextID++, nome, email) // novoid++ é pra toda vez aumentar um no id
-        this.users.push(user) 
-        return user}
-        catch (erro){
-            console.log("erro ao adicionar usuario", erro)
-        }
-    }
-    getUsers(){
-        try{
-        return this.users}
-        catch (erro){
-            console.log("erro ao puxar os usuarios", erro)
-    }
-}
-
-}
-
-module.exports = new userService
+module.exports = new userService();
