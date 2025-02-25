@@ -36,13 +36,22 @@ class userService{
 
     
     addUser(nome,email){
+        try{
         const user = new User(this.nextID++, nome, email) // novoid++ é pra toda vez aumentar um no id
         this.users.push(user) 
-        return user
+        return user}
+        catch (erro){
+            console.log("erro ao adicionar usuario")
+        }
     }
     getUsers(){
-        return this.users
+        try{
+        return this.users}
+        catch (erro){ 
+            console.log("erro ao puxar os usuarios")
     }
+}
+
 }
 
 module.exports = new userService
