@@ -1,0 +1,14 @@
+.block  {
+    display: inline;
+
+}
+.inline{
+    display: inline;
+}
+.inline-bl {
+    display: inline-block;
+
+}
+.none{
+    display: none;
+}
