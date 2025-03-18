@@ -32,13 +32,15 @@ app.delete("/users/:id", (req, res) =>{
     catch(erro){
         res.status(400).json({error: "Usuário não encontrado"})
     }
-    app.edit("/users/:id", (req, res) =>{
-        const id = parseInt(req.params.id)
-        const {nome, email, senha, cpf, endereço, telefone} = req.body
-        try{ const user = userService.editUser(id, nome, email, senha, cpf, endereço, telefone)
-            res.status(200).json({user})}
-            catch(erro){
-                res.status(400).json({error: "Usuário não encontrado"})
-            }
-    })
-});
+ app.put("/users/:id", (req, res) =>{   
+    const id = parseInt(req.params.id)
+    const {nome, email, senha, cpf, endereço, telefone} = req.body
+    try{
+        const user = userService.editUser(id, nome, email, senha, cpf, endereço, telefone)
+        if(!user) return res.status(400).json({error: "Usuário não encontrado"})
+        res.status(200).json({user})
+    }
+    catch(erro){
+        res.status(400).json({error: "Usuário não encontrado"})
+    }       
+});})
