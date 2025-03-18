@@ -24,3 +24,21 @@ const port = 3000
 app.listen (port, () =>{
     console.log("O servidor está rodando na porta: ", port)
 })
+
+app.delete("/users/:id", (req, res) =>{
+    const id = parseInt(req.params.id)
+   try{ userService.deleteUser(id)
+    res.status(200).json({message: "Usuário deletado com sucesso"})}
+    catch(erro){
+        res.status(400).json({error: "Usuário não encontrado"})
+    }
+    app.edit("/users/:id", (req, res) =>{
+        const id = parseInt(req.params.id)
+        const {nome, email, senha, cpf, endereço, telefone} = req.body
+        try{ const user = userService.editUser(id, nome, email, senha, cpf, endereço, telefone)
+            res.status(200).json({user})}
+            catch(erro){
+                res.status(400).json({error: "Usuário não encontrado"})
+            }
+    })
+});

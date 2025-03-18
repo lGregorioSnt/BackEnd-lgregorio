@@ -58,6 +58,28 @@ class userService {
             console.log("Erro ao puxar os usuários", erro);
         }
     }
+    deleteUser(id){
+        try{
+            this.users = this.users.filter(user => user.id !== id); // filtra os usuários que não são o id passado
+            this.saveUsers(); // salva os usuários no arquivo
+        }
+        catch(erro){
+            console.log("Erro ao deletar usuário", erro);
+    }
+}
+    Edituser(id, nome, email, senha, cpf, endereço, telefone){
+        try{
+            const index = this.users.findIndex(user => user.id === id); // procura o índice do usuário com o id passado
+            if(index === -1) return null; // caso não encontre o usuário
+            this.users[index] = new User(id, nome, email, senha, cpf, endereço, telefone); // altera o usuário
+            this.saveUsers(); // salva os usuários no arquivo
+            return this.users[index];
+        }
+        catch(erro){
+            console.log("Erro ao editar usuário", erro);
+        }
+    }
+    
 }
 
 module.exports = new userService();
