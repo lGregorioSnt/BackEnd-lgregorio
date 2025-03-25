@@ -1,7 +1,7 @@
 const User = require("./user");
 const path = require("path"); // Módulo para manipular caminhos
 const fs = require("fs"); // Módulo para manipular arquivos
-
+const bcrypt = require("bcryptjs"); // Módulo para criptografar senhas
 class userService {
     constructor() {
         this.filePath = path.join(__dirname, 'user.json');
@@ -34,13 +34,14 @@ class userService {
         try {
             fs.writeFileSync(this.filePath, JSON.stringify(this.users)); // Salva os usuários no arquivo
         } catch (erro) {
-            console.log("Não foi possível salvar o usuário", erro);
+            console.log("Não foi possível salvar o usuário", erro); 
         }
     }
 
-    addUser(nome, email, senha, cpf, endereço, telefone) {
+   async addUser(nome, email, senha, cpf, endereço, telefone) {
         try {
-            const user = new User(this.nextID++, nome, email, senha, cpf, endereço, telefone); // Cria novo usuário
+            const senhacrpipto = await bcrypt.hash(senha, 10); // Criptografa a senha
+            const user = new User(this.nextID++, nome, email, senhacrpipto, cpf, endereço, telefone); // Cria novo usuário
             this.users.push(user); // Adiciona o novo usuário
             this.saveUsers(); // Salva os usuários no arquivo
             return user;
