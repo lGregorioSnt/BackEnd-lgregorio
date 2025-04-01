@@ -74,6 +74,10 @@ class userService {
 
     Edituser(id, nome, email, senha, cpf, endereço, telefone) {
         try {
+            const userExists = this.users.some(user => user.cpf === cpf);
+            if (userExists) {
+                throw new Error("Usuário com este CPF já existe.");
+            }
             const index = this.users.findIndex(user => String(user.id) === String(id)); // Procura o índice do usuário com o id passado
             if (index === -1) return null; // Caso não encontre o usuário
 
@@ -82,7 +86,7 @@ class userService {
                 nome: nome || this.users[index].nome,
                 email: email || this.users[index].email,
                 senha: senha || this.users[index].senha,
-                cpf: cpf || this.users[index].cpf,
+                cpf: cpf || this.users[index].cpf, 
                 endereço: endereço || this.users[index].endereço,
                 telefone: telefone || this.users[index].telefone
             });
@@ -91,7 +95,8 @@ class userService {
             return this.users[index]; // Retorna o usuário atualizado
         } catch (erro) {
             console.log("Erro ao editar usuário", erro);
-            return null;
+            res.status(500).json({ error: erro.message });
+
         }
     }
 }

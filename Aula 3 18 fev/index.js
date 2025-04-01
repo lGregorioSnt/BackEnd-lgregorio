@@ -14,6 +14,7 @@ app.post("/users", async (req, res) => {
         const user = await userService.addUser(nome, email, senha, cpf, endereco, telefone);
         res.status(200).json({ user });
     } catch (erro) {
+
         res.status(500).json({ error: erro.message });
     }
 });
@@ -36,17 +37,17 @@ app.delete("/users/:id", (req, res) => {
 
 // Rota para editar usuário
 app.put("/users/:id", (req, res) => {   
-    const id = parseInt(req.params.id);
+   try{ const id = parseInt(req.params.id);
     const { nome, email, senha, cpf, endereço, telefone } = req.body;
 
-    try {
+   
         const user = userService.Edituser(id, nome, email, senha, cpf, endereço, telefone);
         if (!user) return res.status(404).json({ error: "Usuário não encontrado" });
 
         res.status(200).json({ message: "Usuário atualizado com sucesso", user });
     } catch (erro) {
         console.error("Erro ao editar usuário:", erro);
-        res.status(500).json({ error: "Erro interno no servidor" });
+        res.status(500).json({ error: "Ja possui um usuario com este cpf" });
     }
 });
 
