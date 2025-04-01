@@ -74,7 +74,7 @@ class userService {
 
     Edituser(id, nome, email, senha, cpf, endereço, telefone) {
         try {
-            const userExists = this.users.some(u => u.id !== id && u.cpf === cpf); // Verifica se já existe um usuário com o CPF
+            const userExists = this.users.some(user => user.cpf === cpf);
             if (userExists) {
                 throw new Error("Usuário com este CPF já existe.");
             }
