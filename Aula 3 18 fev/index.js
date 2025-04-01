@@ -6,12 +6,16 @@ app.use(express.json()); // ativa o JSON no express
 
 // Rota para usuário ser criado
 app.post("/users", async (req, res) => {
-    const { nome, email, senha,  endereço, cpf,  telefone } = req.body; // Passa um arquivo
-    if (!nome || !email || !senha || !endereço || !telefone || !cpf) { // Caso o nome e o email sejam diferentes vai dar erro
-        return res.status(400).json({ error: "Nome, email, senha, endereço, telefone e CPF são obrigatórios" }); // Mensagem caso dê erro
+    const { nome, email, senha, cpf, endereco, telefone } = req.body; 
+    if (!nome || !email || !senha || !cpf || !endereco || !telefone) {
+        return res.status(400).json({ error: "Nome, email, senha, endereço, telefone e CPF são obrigatórios" });
     }
-    const user = await userService.addUser(nome, email, senha, cpf,endereço , telefone);
-    res.status(200).json({ user });
+    try {
+        const user = await userService.addUser(nome, email, senha, cpf, endereco, telefone);
+        res.status(200).json({ user });
+    } catch (erro) {
+        res.status(500).json({ error: erro.message });
+    }
 });
 
 // Rota para listar todos os usuários
