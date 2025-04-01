@@ -40,6 +40,10 @@ class userService {
 
    async addUser(nome, email, senha, cpf, endereço, telefone) {
         try {
+            const userExists = this.users.some(user => user.cpf === cpf);
+                    if (userExists) {
+                        throw new Error("Usuário com este CPF já existe.");}
+                
             const senhacrpipto = await bcrypt.hash(senha, 10); // Criptografa a senha
             const user = new User(this.nextID++, nome, email, senhacrpipto, cpf, endereço, telefone); // Cria novo usuário
             this.users.push(user); // Adiciona o novo usuário
