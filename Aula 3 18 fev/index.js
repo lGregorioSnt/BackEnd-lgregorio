@@ -12,7 +12,7 @@ app.post("/users", async (req, res) => {
     }
     try {
         const user = await userService.addUser(nome, email, senha, cpf, endereco, telefone);
-        res.status(200).json({ user });
+        res.status(200).json({ message: "Usuário criado com sucesso", user });
     } catch (erro) {
 
         res.status(500).json({ error: erro.message });

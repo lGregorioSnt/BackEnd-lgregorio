@@ -25,7 +25,11 @@ color: pink;
 img {  
 max-width: 100%;  
 height: auto;  
-margin: 10px 0;  
+margin: 10px 0; 
+border: 10px solid;
+border-image: linear-gradient(red,green)1;
+width: 200px;
+height: 100px;
 }  
 
 
@@ -33,6 +37,8 @@ ul {
 margin: 20px 0;  
 padding-left: 20px;  
 color: #333;  
+border: 10px solid;
+border-image: linear-gradient(red,white);
 } 
 .teste{
 color: green;
@@ -41,4 +47,6 @@ color: green;
 
 .gtv{
     background-color: yellow;
+    display: none;
 }
+
