@@ -39,17 +39,13 @@ class userService {
         }
     }
 
-    async addUser(nome, email, senha, cpf, endereço, telefone) {
+    async addUser(nome, email, senha, cpf, endereco, telefone) {
         try {
-            const userExists = this.users.some(user => user.cpf === cpf);
-            if (userExists) {
-                throw new Error("Usuário com este CPF já existe.");
-            }
             const senhacrpipto = await bcrypt.hash(senha, 10); // Criptografa a senha
             const resultados = await mysql.execute (`
 		    insert into cadastros (nome, email, senha, endereco, telefone,cpf)
         	values (?, ?, ?, ?, ?, ?);`
-            , [nome, email, senhacrpipto, endereço, telefone, cpf]
+            , [nome, email, senhacrpipto, endereco, telefone, cpf]
         ); // Insere o usuário no banco de dados
   return resultados;
     } catch (erro) {
@@ -75,32 +71,24 @@ class userService {
         }
     }
 
-    Edituser(id, nome, email, senha, cpf, endereço, telefone) {
+    async Edituser(id, nome, email, endereco, senha, telefone, cpf) {
         try {
-            const userExists = this.users.some(user => user.cpf === cpf);
-            if (userExists) {
-                throw new Error("Usuário com este CPF já existe.");
-            }
-            const index = this.users.findIndex(user => String(user.id) === String(id)); // Procura o índice do usuário com o id passado
-            if (index === -1) return null; // Caso não encontre o usuário
- const senhacrpipto = bcrypt.hashSync(senha, 10); // Criptografa a senha
-            // Atualiza somente os campos enviados na requisição
-            Object.assign(this.users[index], {
-                
-                nome: nome || this.users[index].nome,
-                email: email || this.users[index].email,
-                senha: senhacrpipto, // Atualiza a senha criptografada
-                cpf: cpf || this.users[index].cpf, 
-                endereço: endereço || this.users[index].endereço,
-                telefone: telefone || this.users[index].telefone
-            });
-
-            this.saveUsers(); // Salva os usuários no arquivo
-            return this.users[index]; // Retorna o usuário atualizado
+            
+            // Criptografa a senha
+            const senhaCripto = await bcrypt.hash(senha, 10);
+            const resultados = await mysql.execute(
+                `
+                UPDATE cadastros
+                SET nome = ?, email = ?, senha = ?, endereco = ?, telefone = ?, cpf = ?
+                WHERE id = ?;
+                `,
+                [nome, email, senhaCripto, endereco, telefone, cpf, id]
+            );
+            
+            return resultados; // Retorna o usuário atualizado
         } catch (erro) {
-            console.log("Erro ao editar usuário", erro);
-                    res.status(500).json({ error: erro.message });
-
+            console.log('Erro ao atualizar usuario', erro);
+            throw erro;
         }
     }
 }

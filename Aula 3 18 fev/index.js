@@ -38,10 +38,10 @@ app.delete("/users/:id", (req, res) => {
 // Rota para editar usuário
 app.put("/users/:id", (req, res) => {   
    try{ const id = parseInt(req.params.id);
-    const { nome, email, senha, cpf, endereço, telefone } = req.body;
+    const { nome, email, senha, cpf, endereco, telefone } = req.body;
 
    
-        const user = userService.Edituser(id, nome, email, senha, cpf, endereço, telefone);
+        const user = userService.Edituser(id, nome, email, endereco, senha, telefone, cpf);
         if (!user) return res.status(404).json({ error: "Usuário não encontrado" });
 
         res.status(200).json({ message: "Usuário atualizado com sucesso", user });
