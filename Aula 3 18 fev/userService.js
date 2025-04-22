@@ -4,12 +4,7 @@ const fs = require("fs"); // Módulo para manipular arquivos
 const bcrypt = require("bcryptjs"); // Módulo para criptografar senhas
 const mysql = require("./mysql")
 class userService {
-    constructor() {
-        this.filePath = path.join(__dirname, 'user.json');
-        this.users = this.loadUsers(); // Invoca o método para carregar os usuários
-        this.nextID = this.getNextId(); // Invoca o método para pegar o próximo ID
-    }
-
+   
     loadUsers() {
         try {
             if (fs.existsSync(this.filePath)) { // Verifica se o arquivo existe
@@ -22,22 +17,6 @@ class userService {
         return []; // Retorna array vazio em caso de erro ou arquivo não encontrado
     }
 
-    getNextId() {
-        try {
-            if (this.users.length === 0) return 1; // Caso não haja nenhum usuário
-            return Math.max(...this.users.map(user => user.id)) + 1; // Retorna o maior id + 1
-        } catch (erro) {
-            console.log("Erro ao buscar o id", erro);
-        }
-    }
-
-    saveUsers() {
-        try {
-            fs.writeFileSync(this.filePath, JSON.stringify(this.users)); // Salva os usuários no arquivo
-        } catch (erro) {
-            console.log("Não foi possível salvar o usuário", erro); 
-        }
-    }
 
     async addUser(nome, email, senha, cpf, endereco, telefone) {
         try {
@@ -54,23 +33,35 @@ class userService {
         }
     }
 
-    getUsers() {
+    async getUser(id) {
         try {
-            return this.users; // Retorna os usuários
+            const resultado = await mysql.execute(`SELECT * FROM cadastros;`); // Seleciona todos os usuários do banco de dados
+            console.log("resultado", resultado); // Log do resultado
+            return resultado;
         } catch (erro) {
             console.log("Erro ao puxar os usuários", erro);
         }
     }
 
-    deleteUser(id) {
+    async deleteUser(id) {
         try {
-            this.users = this.users.filter(user => user.id !== id); // Filtra os usuários que não são o id passado
-            this.saveUsers(); // Salva os usuários no arquivo
+            const resultado = await mysql.execute(
+                `DELETE FROM cadastros WHERE id = ?;`,
+                [id]
+            );
+    
+            if (resultado.affectedRows === 0) {
+                console.log("Usuário não encontrado");
+                return null; // Retorna null se nenhum registro foi excluído
+            }
+    
+            console.log("Usuário deletado com sucesso");
+            return resultado; // Retorna o resultado da exclusão
         } catch (erro) {
             console.log("Erro ao deletar usuário", erro);
+            throw erro; // Lança o erro para ser tratado no index.js
         }
     }
-
     async Edituser(id, nome, email, endereco, senha, telefone, cpf) {
         try {
             

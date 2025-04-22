@@ -21,7 +21,7 @@ app.post("/users", async (req, res) => {
 
 // Rota para listar todos os usuários
 app.get("/users", (req, res) => {
-    res.json(userService.getUsers());
+    res.json(userService.getUser());
 });
 
 // Rota para deletar usuário
@@ -29,7 +29,7 @@ app.delete("/users/:id", (req, res) => {
     const id = parseInt(req.params.id);
     try {
         userService.deleteUser(id);
-        res.status(200).json({ message: "Usuário deletado com sucesso" });
+       return res.status(200).json({ message: "Usuário deletado com sucesso" });
     } catch (erro) {
         res.status(400).json({ error: "Usuário não encontrado" });
     }
