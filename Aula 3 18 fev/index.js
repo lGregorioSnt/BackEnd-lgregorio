@@ -25,13 +25,18 @@ app.get("/users", (req, res) => {
 });
 
 // Rota para deletar usuário
-app.delete("/users/:id", (req, res) => {
+app.delete("/users/:id", async (req, res) => {
     const id = parseInt(req.params.id);
     try {
-        userService.deleteUser(id);
-       return res.status(200).json({ message: "Usuário deletado com sucesso" });
+        const resultado = await userService.deleteUser(id); // Aguarda o retorno do método deleteUser
+
+        if (!resultado) {
+            return res.status(404).json({ message: "Usuário não encontrado" }); // Retorna 404 se o usuário não for encontrado
+        }
+
+        return res.status(200).json({ message: "Usuário deletado com sucesso", resultado }); // Retorna sucesso se o usuário foi excluído
     } catch (erro) {
-        res.status(400).json({ error: "Usuário não encontrado" });
+        res.status(500).json({ error: "Erro ao deletar usuário" }); // Retorna erro genérico em caso de falha
     }
 });
 

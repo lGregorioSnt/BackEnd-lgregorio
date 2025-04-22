@@ -6,7 +6,7 @@
         "request": "launch",
         "name": "Iniciar programa",
         "skipFiles": ["<node_internals>/**"],
-        "program": "${workspaceFolder}/index.js"
+        "program": "${workspaceFolder}/aula 3 18 fev/index.js"
       }
     ]
   }
